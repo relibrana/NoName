@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      kenney-promo_0: -1415655557338555280
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
