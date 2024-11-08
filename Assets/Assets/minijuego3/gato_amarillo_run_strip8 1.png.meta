@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gato_amarillo_run_strip8 1_0: 2934383043328883508
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

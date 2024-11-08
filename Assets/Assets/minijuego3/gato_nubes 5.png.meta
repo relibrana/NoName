@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gato_nubes 5_0: 1666509963616945709
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

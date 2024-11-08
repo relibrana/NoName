@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gato_tiles 70_0: 364344803279865801
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

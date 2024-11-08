@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gadross 14_0: 2839623098752275143
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

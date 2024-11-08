@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      detail_white_horn_small_0: -1706306385728027671
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
