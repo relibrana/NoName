@@ -106,7 +106,8 @@ public class MinigameManager : MonoBehaviour
     }
 
     // Llamado cuando se hace clic en una opción
-    void OnOptionClicked(SpriteRenderer option)
+  // Llamado cuando se hace clic en una opción
+void OnOptionClicked(SpriteRenderer option)
 {
     if (optionSelected) return; // Si ya se seleccionó una opción, no hacer nada
 
@@ -133,6 +134,7 @@ public class MinigameManager : MonoBehaviour
         fallingSpriteRenderer.gameObject.SetActive(true);
         fallingSpriteRenderer.sprite = selectedOption.sprite;
         StartCoroutine(StartFalling());
+        ShowLose(); // Si es incorrecta, mostrar el Lose inmediatamente
     }
 }
 
@@ -188,24 +190,22 @@ private void ShowLose()
 // Coroutine para cargar la escena después de un delay
 IEnumerator DelayedLoadGameplayScene(bool isWin)
 {
-    // Espera 2 segundos para visualizar la animación
-
     if (isWin)
     {
-        yield return new WaitForSeconds(2f); 
+        yield return new WaitForSeconds(2f);
         Debug.Log("Cargando escena después de ganar...");
         GameManager.instance.RemoveSentenceForMinigame(sentenceToRemove);
         GameManager.instance.SetReturningToGameplay(true);
     }
     else
     {
-        yield return new WaitForSeconds(1f); 
+        yield return new WaitForSeconds(1.5f);
         Debug.Log("Cargando escena después de perder...");
         GameManager.instance.AddStress();
         GameManager.instance.SetReturningToGameplay(true);
     }
 
-    // Cargar la escena de juego principal (puedes reemplazar "Gameplay" con el nombre de la escena que prefieras)
+    // Cargar la escena de juego principal
     SceneManager.LoadScene("Gameplay");
 }
     // Función de actualización para detectar los clics en las opciones
