@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c311145f4e4ce8d4189c13544ab98c83, type: 3}
+  m_Name: Puzzle1
+  m_EditorClassIdentifier: 
+  timeInSeconds: 0
+  Columns: 10
+  Rows: 10
+  Board:
+  - Size: 10
+    Row:
+    - Q
+    - P
+    - D
+    - A
+    - D
+    - O
+    - C
+    - U
+    - B
+    - W
+  - Size: 10
+    Row:
+    - A
+    - C
+    - T
+    - S
+    - B
+    - W
+    - F
+    - J
+    - Y
+    - T
+  - Size: 10
+    Row:
+    - W
+    - V
+    - V
+    - P
+    - K
+    - S
+    - U
+    - C
+    - I
+    - G
+  - Size: 10
+    Row:
+    - U
+    - D
+    - I
+    - N
+    - O
+    - S
+    - A
+    - U
+    - R
+    - Y
+  - Size: 10
+    Row:
+    - F
+    - D
+    - I
+    - N
+    - O
+    - S
+    - A
+    - U
+    - R
+    - K
+  - Size: 10
+    Row:
+    - O
+    - K
+    - W
+    - Q
+    - G
+    - B
+    - N
+    - W
+    - N
+    - L
+  - Size: 10
+    Row:
+    - S
+    - V
+    - R
+    - H
+    - F
+    - F
+    - N
+    - G
+    - Z
+    - T
+  - Size: 10
+    Row:
+    - S
+    - J
+    - Q
+    - M
+    - I
+    - R
+    - V
+    - N
+    - H
+    - F
+  - Size: 10
+    Row:
+    - I
+    - B
+    - H
+    - L
+    - V
+    - J
+    - A
+    - K
+    - P
+    - L
+  - Size: 10
+    Row:
+    - L
+    - Y
+    - Q
+    - K
+    - D
+    - L
+    - J
+    - T
+    - J
+    - U
+  SearchWords:
+  - Word: DINOSAUR
