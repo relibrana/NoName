@@ -170,6 +170,7 @@ void OnOptionClicked(SpriteRenderer option)
     // Mostrar el objeto win con un pequeño delay para que se vea la animación de caída
 private void ShowWin()
 {
+     SoundManager.instance.PlaySound("SFX_Victory_Minijuegos");
     // Mostrar mensaje de depuración
     Debug.Log("¡Ganaste!");
 
@@ -182,6 +183,7 @@ private void ShowWin()
 // Mostrar el objeto lose sin delay adicional
 private void ShowLose()
 {
+    SoundManager.instance.PlaySound("SFX_Lose_Minijuegos");
     Debug.Log("¡Perdiste!");
     loseObject.SetActive(true); // Activa el objeto Lose
     StartCoroutine(DelayedLoadGameplayScene(false)); // Sin delay adicional

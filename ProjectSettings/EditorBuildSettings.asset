@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Minijuego #1.unity
     guid: d220442a1d3f0674285680df67c121bf
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Minijuego #2.unity
     guid: dd78252e79bc15f439d7594beae07b99
   - enabled: 1
@@ -26,7 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Minijuego #4.unity
     guid: c0bbbfb0610f2f24c8c6611e8a3ac3f5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Story.unity
     guid: 484d7c42987d13d4caf60c66871d9a0f
   m_configObjects:

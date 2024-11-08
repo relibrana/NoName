@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
             losePanel.SetActive(true);
         }
         // Aumenta el estrés al perder y vuelve a la escena de juego
+        SoundManager.instance.PlaySound("SFX_Lose_Minijuegos");
         GameManager.instance.AddStress();
         GameManager.instance.SetReturningToGameplay(true);
         SceneManager.LoadScene("Gameplay");
@@ -96,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         {
             winPanel.SetActive(true);
         }
-
+         SoundManager.instance.PlaySound("SFX_Victory_Minijuegos");
         // Usa el GameManager para eliminar la oración asignada al minijuego
         GameManager.instance.RemoveSentenceForMinigame(sentenceToRemove);
         GameManager.instance.SetReturningToGameplay(true);

@@ -81,6 +81,7 @@ public class MonsterCreationManager : MonoBehaviour
 
     void ShowWin()
     {
+         SoundManager.instance.PlaySound("SFX_Victory_Minijuegos");
         // Usa el GameManager para eliminar la oración asignada al minijuego
         GameManager.instance.RemoveSentenceForMinigame(sentenceToRemove);
         GameManager.instance.SetReturningToGameplay(true);
@@ -91,6 +92,7 @@ public class MonsterCreationManager : MonoBehaviour
 
     void ShowLose()
     {
+        SoundManager.instance.PlaySound("SFX_Lose_Minijuegos");
         // Aumenta el estrés al perder y vuelve a la escena de juego
         GameManager.instance.AddStress();
         GameManager.instance.SetReturningToGameplay(true);
