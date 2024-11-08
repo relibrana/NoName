@@ -1,23 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using TMPro;
+using System.Collections;
 
 public class CharacterCustomization : MonoBehaviour
 {
-    public GameObject character;  // Referencia al GameObject del personaje
+    public GameObject character;
 
-    // Referencias a cada parte del personaje
     private SpriteRenderer leftEyeRenderer, rightEyeRenderer, bodyRenderer, rightLegRenderer, leftLegRenderer, mouthRenderer, rightArmRenderer, leftArmRenderer;
 
-    public Button colorButton, bodyButton, armsButton, legsButton, eyesButton, mouthButton;  // Botones para cada parte
-    public GameObject optionsPanel;  // Panel donde se mostrarán las opciones de sprites
-    public GameObject optionPrefab;  // Prefab de cada opción de color o parte
+    public Button colorButton, bodyButton, armsButton, legsButton, eyesButton, mouthButton;
+    public GameObject optionsPanel;
+    public GameObject optionPrefab;
 
-    private string selectedColor = "";  // Color seleccionado actualmente
-    private string resourcesPath = "Monster/";  // Ruta base para los recursos de los sprites
+    private string selectedColor = "";
+    private string resourcesPath = "Monster/"; // Ruta base donde se encuentran los recursos
+    private char[] optionsLetters = { 'A', 'B', 'C', 'D', 'E' }; // Letras para agregar a la ruta
+
+    private GameObject currentOptionsPanel; // Para almacenar el panel actual de opciones
+    public TextMeshProUGUI warningText;
 
     void Start()
     {
-        // Obtener los componentes SpriteRenderer de cada parte del personaje
+        // Inicialización de los renderizadores de las partes del cuerpo
         leftEyeRenderer = character.transform.Find("left_eye").GetComponent<SpriteRenderer>();
         rightEyeRenderer = character.transform.Find("right_eye").GetComponent<SpriteRenderer>();
         bodyRenderer = character.transform.Find("body").GetComponent<SpriteRenderer>();
@@ -27,34 +33,61 @@ public class CharacterCustomization : MonoBehaviour
         rightArmRenderer = character.transform.Find("right_arm").GetComponent<SpriteRenderer>();
         leftArmRenderer = character.transform.Find("left_arm").GetComponent<SpriteRenderer>();
 
-        // Asegurarse de que el panel de opciones esté activo
-        optionsPanel.SetActive(true);
-
-        // Asignar funciones de clic a cada botón
-        colorButton.onClick.AddListener(() => ShowColorOptions());  // Mostrar opciones de colores
+        // Asignación de los eventos de los botones
+        colorButton.onClick.AddListener(() => ShowColorOptions());
         bodyButton.onClick.AddListener(() => ShowBodyOptions());
         armsButton.onClick.AddListener(() => ShowArmsOptions());
         legsButton.onClick.AddListener(() => ShowLegsOptions());
         eyesButton.onClick.AddListener(() => ShowEyesOptions());
         mouthButton.onClick.AddListener(() => ShowMouthOptions());
+
+        // Inicializamos la opción de color
+        ShowColorOptions();
     }
 
-    // Mostrar las opciones de color primero
     void ShowColorOptions()
     {
-        Debug.Log("Showing color options");
-        ShowOptions("Colors", SetColor);  // Mostrar opciones de colores
+        ClearPreviousOptions(); // Eliminar opciones previas antes de mostrar nuevas
+        ShowOptions("Colors", SetColor); // Mostrar las opciones de color
     }
 
-    // Mostrar las opciones de personalización para cada parte
     void ShowBodyOptions()
     {
         if (string.IsNullOrEmpty(selectedColor))
         {
             Debug.LogWarning("Please select a color first!");
+            ShowWarningText("Please select a color first!");  // Mostrar mensaje de advertencia
             return;
         }
-        ShowOptions("body", SetBody);
+
+        ClearPreviousOptions(); // Eliminar opciones previas antes de mostrar nuevas
+
+        // Agregar las letras A, B, C, D, E a la ruta de los sprites de cuerpo
+        foreach (char letter in optionsLetters)
+        {
+            string path = "body_" + selectedColor + letter;
+            Debug.Log("Loading sprites from path: " + path); // Imprimir la ruta para depurar
+            ShowOptions(path, SetBody);
+        }
+    }
+
+    void ShowWarningText(string message)
+    {
+        if (warningText != null)
+        {
+            warningText.text = message;  // Establecer el mensaje de advertencia
+            warningText.gameObject.SetActive(true);  // Activar el GameObject que contiene el texto
+            StartCoroutine(HideWarningTextAfterDelay(2f));  // Desactivar después de 2 segundos
+        }
+    }
+
+    IEnumerator HideWarningTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (warningText != null)
+        {
+            warningText.gameObject.SetActive(false);  // Desactivar el GameObject del texto después del retraso
+        }
     }
 
     void ShowArmsOptions()
@@ -62,9 +95,19 @@ public class CharacterCustomization : MonoBehaviour
         if (string.IsNullOrEmpty(selectedColor))
         {
             Debug.LogWarning("Please select a color first!");
+            ShowWarningText("Please select a color first!");  // Mostrar mensaje de advertencia
             return;
         }
-        ShowOptions("arm", SetArms);
+
+        ClearPreviousOptions(); // Eliminar opciones previas antes de mostrar nuevas
+
+        // Agregar las letras A, B, C, D, E a la ruta de los sprites de brazos
+        foreach (char letter in optionsLetters)
+        {
+            string path = "arm_" + selectedColor + letter;
+            Debug.Log("Loading sprites from path: " + path); // Imprimir la ruta para depurar
+            ShowOptions(path, SetArms);
+        }
     }
 
     void ShowLegsOptions()
@@ -72,62 +115,94 @@ public class CharacterCustomization : MonoBehaviour
         if (string.IsNullOrEmpty(selectedColor))
         {
             Debug.LogWarning("Please select a color first!");
+            ShowWarningText("Please select a color first!");  // Mostrar mensaje de advertencia
             return;
         }
-        ShowOptions("leg", SetLegs);
+
+        ClearPreviousOptions(); // Eliminar opciones previas antes de mostrar nuevas
+
+        // Agregar las letras A, B, C, D, E a la ruta de los sprites de piernas
+        foreach (char letter in optionsLetters)
+        {
+            string path = "leg_" + selectedColor + letter;
+            Debug.Log("Loading sprites from path: " + path); // Imprimir la ruta para depurar
+            ShowOptions(path, SetLegs);
+        }
     }
 
     void ShowEyesOptions()
     {
-        if (string.IsNullOrEmpty(selectedColor))
+        ClearPreviousOptions(); // Eliminar opciones previas antes de mostrar nuevas
+        // Cargar todos los sprites dentro de la carpeta Monster
+        Sprite[] allSprites = Resources.LoadAll<Sprite>(resourcesPath);
+
+        // Filtrar los sprites que contienen la palabra "eye" en su nombre
+        var eyeSprites = allSprites.Where(sprite => sprite.name.Contains("eye")).ToArray();
+
+        if (eyeSprites.Length == 0)
         {
-            Debug.LogWarning("Please select a color first!");
+            Debug.LogWarning("No sprites found containing 'eye'");
             return;
         }
-        ShowOptions("eye", SetEyes);
+
+        // Mostrar las opciones
+        foreach (Sprite sprite in eyeSprites)
+        {
+            GameObject option = Instantiate(optionPrefab, optionsPanel.transform);
+            Transform imageTransform = option.transform.Find("Image");
+
+            if (imageTransform != null)
+            {
+                Image buttonImage = imageTransform.GetComponent<Image>();
+                if (buttonImage != null)
+                {
+                    buttonImage.sprite = sprite;
+                }
+            }
+
+            option.GetComponent<Button>().onClick.AddListener(() => SetEyes(sprite));
+        }
     }
 
     void ShowMouthOptions()
     {
-        if (string.IsNullOrEmpty(selectedColor))
+        ClearPreviousOptions(); // Eliminar opciones previas antes de mostrar nuevas
+        // Cargar todos los sprites dentro de la carpeta Monster
+        Sprite[] allSprites = Resources.LoadAll<Sprite>(resourcesPath);
+
+        // Filtrar los sprites que contienen la palabra "mouth" en su nombre
+        var mouthSprites = allSprites.Where(sprite => sprite.name.Contains("mouth")).ToArray();
+
+        if (mouthSprites.Length == 0)
         {
-            Debug.LogWarning("Please select a color first!");
+            Debug.LogWarning("No sprites found containing 'mouth'");
             return;
         }
-        ShowOptions("mouth", SetMouth);
+
+        // Mostrar las opciones
+        foreach (Sprite sprite in mouthSprites)
+        {
+            GameObject option = Instantiate(optionPrefab, optionsPanel.transform);
+            Transform imageTransform = option.transform.Find("Image");
+
+            if (imageTransform != null)
+            {
+                Image buttonImage = imageTransform.GetComponent<Image>();
+                if (buttonImage != null)
+                {
+                    buttonImage.sprite = sprite;
+                }
+            }
+
+            option.GetComponent<Button>().onClick.AddListener(() => SetMouth(sprite));
+        }
     }
 
-    // Función para mostrar las opciones de la categoría especificada
     void ShowOptions(string category, System.Action<Sprite> onSelect)
     {
-        Debug.Log($"ShowOptions - Category: {category}");
-
-        // Asegurarse de que el panel esté activo
-        if (!optionsPanel.activeSelf) 
-        {
-            Debug.LogWarning("Options panel is not active!");
-            optionsPanel.SetActive(true);  // Asegurarse de que esté activo
-        }
-
-        ClearOptions();  // Limpiar opciones anteriores
         string path = resourcesPath + category;
 
-        if (category == "Colors")  // Si la categoría es "Colors", no se requiere color seleccionado
-        {
-            Debug.Log("Showing color options");
-        }
-        else if (!string.IsNullOrEmpty(selectedColor))
-        {
-            path += "/" + selectedColor;  // Agregar el color a la ruta para partes específicas
-            Debug.Log($"Path with selected color: {path}");
-        }
-        else
-        {
-            Debug.LogWarning("Please select a color first!");
-            return;  // No mostrar partes si no se ha seleccionado color
-        }
-
-        // Cargar los sprites
+        // Aquí usamos Resources.LoadAll para cargar todos los sprites de la categoría
         Sprite[] sprites = Resources.LoadAll<Sprite>(path);
         if (sprites.Length == 0)
         {
@@ -135,84 +210,72 @@ public class CharacterCustomization : MonoBehaviour
             return;
         }
 
-        // Comprobar si los sprites se cargaron correctamente
-        Debug.Log($"Loaded {sprites.Length} sprites from path: {path}");
-
-        // Crear botones
+        // Instanciamos las opciones
         foreach (Sprite sprite in sprites)
         {
-            Debug.Log($"Sprite Found: {sprite.name}");
-
-            // Instanciar un botón para cada sprite
             GameObject option = Instantiate(optionPrefab, optionsPanel.transform);
-            
-            // Acceder al Image hijo dentro del prefab (asegurándonos de no afectar el sprite del botón)
-            Image buttonImage = option.GetComponentInChildren<Image>();  // Busca el primer Image hijo
+            Transform imageTransform = option.transform.Find("Image");
 
-            if (buttonImage != null)
+            if (imageTransform != null)
             {
-                // Cambiar solo el sprite del Image dentro del prefab
-                buttonImage.sprite = sprite;  // Asignar el sprite al Image del hijo
+                Image buttonImage = imageTransform.GetComponent<Image>();
+                if (buttonImage != null)
+                {
+                    buttonImage.sprite = sprite;
+                }
             }
 
-            // Configurar el botón para que ejecute la función de selección
-            option.GetComponent<Button>().onClick.AddListener(() => 
-            {
-                Debug.Log($"Option Clicked: {sprite.name}");
-                onSelect(sprite);  // Llamar a la función correspondiente (SetColor, SetBody, etc.)
-            });
+            option.GetComponent<Button>().onClick.AddListener(() => onSelect(sprite));
         }
     }
 
-    // Limpiar las opciones anteriores en el panel
-    void ClearOptions()
+    void ClearPreviousOptions()
     {
-        Debug.Log("Clearing previous options");
+        // Eliminar todas las opciones anteriores
         foreach (Transform child in optionsPanel.transform)
         {
-            Destroy(child.gameObject);  // Destruir los objetos hijos del panel
+            Destroy(child.gameObject);
         }
     }
 
-    // Funciones para asignar la parte seleccionada del personaje
     void SetColor(Sprite colorSprite)
     {
-        Debug.Log($"Color Selected: {colorSprite.name}");
-        selectedColor = colorSprite.name;  // Guardar el color seleccionado
-        // Después de elegir el color, puedes permitir al usuario elegir otras partes del personaje.
-        ShowBodyOptions();  // Opción para elegir el cuerpo después del color
+        selectedColor = colorSprite.name.Replace("_0", "");
+        Debug.Log("Color Selected: " + selectedColor);
     }
 
     void SetBody(Sprite bodySprite)
     {
-        Debug.Log($"Body Selected: {bodySprite.name}");
-        bodyRenderer.sprite = bodySprite;  // Cambiar el sprite del cuerpo
+        bodyRenderer.sprite = bodySprite;
     }
 
     void SetArms(Sprite armsSprite)
     {
-        Debug.Log($"Arms Selected: {armsSprite.name}");
         leftArmRenderer.sprite = armsSprite;
         rightArmRenderer.sprite = armsSprite;
     }
 
     void SetLegs(Sprite legsSprite)
     {
-        Debug.Log($"Legs Selected: {legsSprite.name}");
         leftLegRenderer.sprite = legsSprite;
         rightLegRenderer.sprite = legsSprite;
     }
 
     void SetEyes(Sprite eyesSprite)
     {
-        Debug.Log($"Eyes Selected: {eyesSprite.name}");
         leftEyeRenderer.sprite = eyesSprite;
         rightEyeRenderer.sprite = eyesSprite;
+
+        // Aseguramos que los ojos estén siempre en el Order in Layer 2
+        leftEyeRenderer.sortingOrder = 2;
+        rightEyeRenderer.sortingOrder = 2;
     }
 
     void SetMouth(Sprite mouthSprite)
     {
-        Debug.Log($"Mouth Selected: {mouthSprite.name}");
         mouthRenderer.sprite = mouthSprite;
+
+        // Aseguramos que la boca esté siempre en el Order in Layer 2
+        mouthRenderer.sortingOrder = 3;
     }
 }

@@ -1190,9 +1190,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentences:
   - I feel like nobody loves me
-  - Every year I get dumber
-  - Nobody wants to work with me
   - I'm lost in life
+  - Nobody wants to work with me
   sentencePrefab: {fileID: 3387437564457114851, guid: dd1aefc5aa5d02641a449cafd21700dd, type: 3}
   offset: {x: 50, y: 0, z: 0}
   canvasObject: {fileID: 0}
